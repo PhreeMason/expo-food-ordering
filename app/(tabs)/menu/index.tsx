@@ -4,7 +4,6 @@ import products from '@/assets/data/products';
 import ProductListItem from '@/components/ProductListItem';
 import { Stack } from 'expo-router';
 
-
 const product = products[0];
 
 export default function TabOneScreen() {
