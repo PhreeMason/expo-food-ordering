@@ -37,36 +37,10 @@ const ProductDetailWithId = () => {
                 source={{ uri: product.image || defaultPizzaImage }}
                 style={styles.image} />
 
-            <Text>Select Size</Text>
-            <View style={styles.sizes}>
-                {sizes.map(size => (
-                    <Pressable
-                        key={size}
-                        onPress={() => setSelectedSize(size)}
-                        style={[
-                            styles.size,
-                            {
-                                backgroundColor:
-                                    selectedSize === size ? 'gainsboro' : 'white'
-                            }
-
-                        ]}>
-                        <Text key={size} style={[
-                            styles.sizeText,
-                            {
-                                color:
-                                    selectedSize === size ? 'black' : 'gray'
-                            }
-                        ]}>
-                            {size}
-                        </Text>
-                    </Pressable>
-                ))}
-            </View>
+            <Text style={styles.price}>{product.name}</Text>
             <Text style={styles.price}>
                 ${product.price}
             </Text>
-            <Button onPress={addToCart} text="Add to cart" />
         </View>
     )
 }
@@ -84,7 +58,6 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
     },
     price: {
-        marginTop: 'auto',
         fontWeight: 'bold',
         fontSize: 18,
     },
