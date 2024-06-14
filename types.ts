@@ -9,10 +9,9 @@ export type Product = {
 
 export type OrderStatus = 'New' | 'Cooking' | 'Delivering' | 'Delivered';
 export type OrderItem = {
-    id: number;
+    id: string;
     product_id: number;
-    products: Product;
-    order_id: number;
+    product: Product;
     size: PizzaSize;
     quantity: number;
 };
@@ -25,3 +24,4 @@ export type Order = {
     status: OrderStatus;
     order_items?: OrderItem[];
 };
+
