@@ -3,6 +3,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import products from '@/assets/data/products';
 import Colors from '@/constants/Colors';
 import { useState } from 'react';
+import Button from '@/components/Button';
 
 const defaultPizzaImage = 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/products/camera.jpg'
 
@@ -12,6 +13,8 @@ const ProductDetailWithId = () => {
     const { id } = useLocalSearchParams()
     const product = products.find(product => product.id === Number(id))
     const [selectedSize, setSelectedSize] = useState<string>('M');
+
+    const addToCart = () => { console.log('add to cart size ' + selectedSize + '') }
 
     if (!product) {
         return (
@@ -31,22 +34,32 @@ const ProductDetailWithId = () => {
             <View style={styles.sizes}>
                 {sizes.map(size => (
                     <Pressable
+                        key={size}
                         onPress={() => setSelectedSize(size)}
                         style={[
                             styles.size,
                             {
                                 backgroundColor:
-                                    selectedSize === size ? Colors.light.tint : 'gainsboro'
+                                    selectedSize === size ? 'gainsboro' : 'white'
                             }
 
                         ]}>
-                        <Text key={size} style={styles.sizeText}>{size}</Text>
+                        <Text key={size} style={[
+                            styles.sizeText,
+                            {
+                                color:
+                                    selectedSize === size ? 'black' : 'gray'
+                            }
+                        ]}>
+                            {size}
+                        </Text>
                     </Pressable>
                 ))}
             </View>
             <Text style={styles.price}>
                 ${product.price}
             </Text>
+            <Button onPress={addToCart} text="Add to cart" />
         </View>
     )
 }
@@ -64,7 +77,7 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
     },
     price: {
-        // color: Colors.light.tint,
+        marginTop: 'auto',
         fontWeight: 'bold',
         fontSize: 18,
     },
@@ -74,7 +87,6 @@ const styles = StyleSheet.create({
         marginVertical: 18,
     },
     size: {
-        backgroundColor: 'gainsboro',
         width: 50,
         aspectRatio: 1,
         borderRadius: 25,
