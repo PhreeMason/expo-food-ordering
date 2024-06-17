@@ -23,7 +23,7 @@ export default function TabLayout() {
             screenOptions={{
                 tabBarActiveTintColor: Colors.light.background,
                 tabBarInactiveTintColor: 'gainsboro',
-                tabBarStyle: {backgroundColor: Colors.light.tint},
+                tabBarStyle: { backgroundColor: Colors.light.tint },
                 headerShown: useClientOnlyValue(false, true),
             }}>
 
@@ -44,7 +44,7 @@ export default function TabLayout() {
                                     <FontAwesome
                                         name="info-circle"
                                         size={25}
-                                        color={Colors[colorScheme ?? 'light'].text}
+                                        color={Colors.light.tint}
                                         style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                                     />
                                 )}

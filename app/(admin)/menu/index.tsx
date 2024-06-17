@@ -3,7 +3,7 @@ import { Text, View } from '@/components/Themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { Link, Stack } from 'expo-router';
 import Colors from '@/constants/Colors';
-import {useColorScheme} from '@/components/useColorScheme';
+import { useColorScheme } from '@/components/useColorScheme';
 
 import products from '@/assets/data/products';
 import ProductListItem from '@/components/ProductListItem';
@@ -15,21 +15,22 @@ export default function TabOneScreen() {
     return (
         <View style={styles.container}>
             <Stack.Screen
-                options={{ title: "Menu",
-                headerRight: () => (
-                    <Link href="/cart" asChild>
-                        <Pressable>
-                            {({ pressed }) => (
-                                <FontAwesome
-                                    name="plus-square-o"
-                                    size={25}
-                                    color={Colors[colorScheme ?? 'light'].text}
-                                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                                />
-                            )}
-                        </Pressable>
-                    </Link>
-                ),
+                options={{
+                    title: "Menu",
+                    headerRight: () => (
+                        <Link href="/" asChild>
+                            <Pressable>
+                                {({ pressed }) => (
+                                    <FontAwesome
+                                        name="plus-square-o"
+                                        size={25}
+                                        color={Colors.light.tint}
+                                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                                    />
+                                )}
+                            </Pressable>
+                        </Link>
+                    ),
 
                 }}
             />
@@ -38,7 +39,7 @@ export default function TabOneScreen() {
                 renderItem={({ item }) => <ProductListItem product={item} />}
                 numColumns={2}
                 contentContainerStyle={styles.listContainer}
-                columnWrapperStyle={{gap: 10}}
+                columnWrapperStyle={{ gap: 10 }}
             />
         </View>
     );

@@ -1,27 +1,16 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams, Link } from 'expo-router';
 import products from '@/assets/data/products';
 import Colors from '@/constants/Colors';
-import { useState } from 'react';
-import Button from '@/components/Button';
-import { useCart } from '@/providers/CartProvider';
 import { PizzaSize } from '@/types';
 import { defaultPizzaImage } from '@/constants/Images';
+import { FontAwesome } from '@expo/vector-icons';
 
 const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
 const ProductDetailWithId = () => {
     const { id } = useLocalSearchParams()
     const product = products.find(product => product.id === Number(id))
-    const [selectedSize, setSelectedSize] = useState<PizzaSize>('M');
-
-    const { addItem } = useCart()
-
-    const addToCart = () => {
-        if (!product) return;
-        addItem(product, selectedSize)
-        router.push('/cart')
-    }
 
     if (!product) {
         return (
@@ -32,7 +21,26 @@ const ProductDetailWithId = () => {
     }
     return (
         <View style={styles.container}>
-            <Stack.Screen options={{ title: product.name }} />
+            <Stack.Screen
+                options={{
+                    title: product.name,
+                    headerRight: () => (
+                        <Link href="/" asChild>
+                            <Pressable>
+                                {({ pressed }) => (
+                                    <FontAwesome
+                                        name="pencil"
+                                        size={25}
+                                        color={Colors.light.tint}
+                                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                                    />
+                                )}
+                            </Pressable>
+                        </Link>
+                    ),
+
+                }}
+            />
             <Image
                 source={{ uri: product.image || defaultPizzaImage }}
                 style={styles.image} />
@@ -60,21 +68,5 @@ const styles = StyleSheet.create({
     price: {
         fontWeight: 'bold',
         fontSize: 18,
-    },
-    sizes: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginVertical: 18,
-    },
-    size: {
-        width: 50,
-        aspectRatio: 1,
-        borderRadius: 25,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    sizeText: {
-        fontSize: 20,
-        fontWeight: 'bold',
     }
 });
