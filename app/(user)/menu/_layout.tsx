@@ -2,12 +2,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Link, Stack } from 'expo-router';
 import { Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-
 
 export default function MenuStackLayout() {
-    const colorScheme = useColorScheme();
-
     return (
         <Stack
             screenOptions={{
@@ -26,8 +22,6 @@ export default function MenuStackLayout() {
                     </Link>
                 ),
             }}
-        >
-            <Stack.Screen name="index" />
-        </Stack>
+        />
     )
 }
