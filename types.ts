@@ -1,5 +1,3 @@
-
-export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
 export type Product = {
     id: number;
     image: string | null;
@@ -7,15 +5,24 @@ export type Product = {
     price: number;
 };
 
-export type OrderStatus = 'New' | 'Cooking' | 'Delivering' | 'Delivered';
-export type OrderItem = {
-    id: number;
-    order_id: number;
+export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
+
+export type CartItem = {
+    id: string;
+    product: Product;
     product_id: number;
-    products: Product;
     size: PizzaSize;
     quantity: number;
 };
+
+export const OrderStatusList: OrderStatus[] = [
+    'New',
+    'Cooking',
+    'Delivering',
+    'Delivered',
+];
+
+export type OrderStatus = 'New' | 'Cooking' | 'Delivering' | 'Delivered';
 
 export type Order = {
     id: number;
@@ -23,6 +30,20 @@ export type Order = {
     total: number;
     user_id: string;
     status: OrderStatus;
+
     order_items?: OrderItem[];
 };
 
+export type OrderItem = {
+    id: number;
+    product_id: number;
+    products: Product;
+    order_id: number;
+    size: PizzaSize;
+    quantity: number;
+};
+
+export type Profile = {
+    id: string;
+    group: string;
+};
