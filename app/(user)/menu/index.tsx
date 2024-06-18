@@ -6,7 +6,7 @@ import { Stack } from 'expo-router';
 
 const product = products[0];
 
-export default function TabOneScreen() {
+export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <Stack.Screen
@@ -17,7 +17,7 @@ export default function TabOneScreen() {
                 renderItem={({ item }) => <ProductListItem product={item} />}
                 numColumns={2}
                 contentContainerStyle={styles.listContainer}
-                columnWrapperStyle={{gap: 10}}
+                columnWrapperStyle={{ gap: 10 }}
             />
         </View>
     );
