@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, TextInput, Image, ScrollView, Alert } from "react-native";
 import Button from "@/components/Button";
 import { defaultPizzaImage } from "@/constants/Images";
 import Colors from "@/constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 
 const CreateProductScreen = () => {
     const [image, setImage] = useState<string | null>(null);
@@ -14,6 +14,8 @@ const CreateProductScreen = () => {
         price: "",
     });
 
+    const { id } = useLocalSearchParams()
+    const isUpdating = !!id
 
     const resetForm = () => {
         setForm({ name: "", price: "" });
@@ -65,9 +67,47 @@ const CreateProductScreen = () => {
 
         resetForm()
     };
+
+    const onUpdateCreate = () => {
+        if (!validateForm()) {
+            return
+        }
+        console.warn('updating product', form)
+        // save to database
+
+        resetForm()
+    };
+
+    const onSubmit = () => {
+        if (isUpdating) {
+            onUpdateCreate()
+            return
+        }
+        onCreate()
+    }
+
+    const onDelete = () => {
+        console.warn('DELETING PRODUCT', form)
+    }
+
+    const confirmDelete = () => {
+        Alert.alert('Confirm', 'Are you sure you want to delete this product?', [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+            },
+            {
+                text: 'Delete',
+                onPress: () => onDelete(),
+                style: 'destructive'
+            },
+        ]
+
+        )
+    }
     return (
         <ScrollView style={styles.container}>
-            <Stack.Screen options={{ title: "Create Product" }} />
+            <Stack.Screen options={{ title: isUpdating ? "Update Product" : "Create Product" }} />
             <Image
                 source={{ uri: image || defaultPizzaImage }}
                 style={styles.image}
@@ -100,7 +140,8 @@ const CreateProductScreen = () => {
                 value={form.price}
             />
             <Text style={{ color: 'red' }}>{errors}</Text>
-            <Button onPress={onCreate} text="Create" />
+            <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
+            <Button onPress={confirmDelete} text="Delete" styles={styles.deleteButton} />
         </ScrollView>
     );
 };
@@ -135,5 +176,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: Colors.light.tint,
         marginVertical: 10,
+    },
+    deleteButton: {
+        backgroundColor: 'red',
     }
 });
