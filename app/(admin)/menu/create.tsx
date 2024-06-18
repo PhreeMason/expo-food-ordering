@@ -141,7 +141,7 @@ const CreateProductScreen = () => {
             />
             <Text style={{ color: 'red' }}>{errors}</Text>
             <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
-            <Button onPress={confirmDelete} text="Delete" styles={styles.deleteButton} />
+            <Button onPress={confirmDelete} text="Delete" styles={styles.textButton} />
         </ScrollView>
     );
 };
@@ -176,8 +176,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: Colors.light.tint,
         marginVertical: 10,
-    },
-    deleteButton: {
-        backgroundColor: 'red',
     }
 });
