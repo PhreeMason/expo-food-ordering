@@ -6,7 +6,7 @@ import CartListItem from '@/components/CartListItem';
 import Button from '@/components/Button';
 
 const CartScreen = () => {
-    const { items, addItem, total } = useCart();
+    const { items, total } = useCart();
     return (
         <View style={{ height: '100%', padding: 10 }}>
             <FlatList

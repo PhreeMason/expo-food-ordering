@@ -25,7 +25,7 @@ const ProductDetailWithId = () => {
                 options={{
                     title: product.name,
                     headerRight: () => (
-                        <Link href="/" asChild>
+                        <Link href="./create" asChild>
                             <Pressable>
                                 {({ pressed }) => (
                                     <FontAwesome
@@ -38,7 +38,6 @@ const ProductDetailWithId = () => {
                             </Pressable>
                         </Link>
                     ),
-
                 }}
             />
             <Image
