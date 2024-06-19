@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Image, ScrollView, Alert } from "react-native";
-import Button from "@/components/Button";
-import { defaultPizzaImage } from "@/constants/Images";
-import Colors from "@/constants/Colors";
+import { useState } from "react";
+import { StyleSheet, Text, TextInput, Image, ScrollView, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+
+import { defaultPizzaImage } from "@/constants/Images";
+import Button from "@/components/Button";
+import Colors from "@/constants/Colors";
+import { useInsertProduct } from '@/api/products'
 
 const CreateProductScreen = () => {
     const [image, setImage] = useState<string | null>(null);
@@ -16,6 +18,9 @@ const CreateProductScreen = () => {
 
     const { id } = useLocalSearchParams()
     const isUpdating = !!id
+
+    const { mutate: insertProduct } = useInsertProduct();
+    const router = useRouter();
 
     const resetForm = () => {
         setForm({ name: "", price: "" });
@@ -60,9 +65,14 @@ const CreateProductScreen = () => {
         if (!validateForm()) {
             return
         }
-        // save to database
+        const { price, name } = form;
+        insertProduct({ price: parseFloat(price), name, image }, {
+            onSuccess: () => {
+                resetForm();
+                router.back();
+            }
+        })
 
-        resetForm()
     };
 
     const onUpdateCreate = () => {
