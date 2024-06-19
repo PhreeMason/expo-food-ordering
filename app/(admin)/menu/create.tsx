@@ -1,14 +1,15 @@
-import { useState } from "react";
-import { StyleSheet, Text, TextInput, Image, ScrollView, Alert } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, TextInput, Image, ScrollView, Alert, ActivityIndicator } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
 import { defaultPizzaImage } from "@/constants/Images";
 import Button from "@/components/Button";
 import Colors from "@/constants/Colors";
-import { useInsertProduct } from '@/api/products'
+import { useInsertProduct, useUpdateProduct, useDeleteProduct, useProduct } from '@/api/products'
 
 const CreateProductScreen = () => {
+    const [loading, setLoading] = useState(false);
     const [image, setImage] = useState<string | null>(null);
     const [errors, setErrors] = useState('')
     const [form, setForm] = useState({
@@ -16,10 +17,26 @@ const CreateProductScreen = () => {
         price: "",
     });
 
-    const { id } = useLocalSearchParams()
+    const { id: idString } = useLocalSearchParams()
+    const id = idString && parseFloat(typeof idString === 'string' ? idString : idString[0]);
+
     const isUpdating = !!id
 
     const { mutate: insertProduct } = useInsertProduct();
+    const { mutate: updateProduct } = useUpdateProduct();
+    const { mutate: deleteProduct } = useDeleteProduct();
+    const { data: upDatingProduct, isLoading, error } = useProduct(id || 0)
+
+    useEffect(() => {
+        if (upDatingProduct) {
+            setForm({
+                name: upDatingProduct.name,
+                price: ` ${upDatingProduct.price}`,
+            })
+            setImage(upDatingProduct.image)
+        }
+    }, [upDatingProduct])
+
     const router = useRouter();
 
     const resetForm = () => {
@@ -69,6 +86,7 @@ const CreateProductScreen = () => {
         insertProduct({ price: parseFloat(price), name, image }, {
             onSuccess: () => {
                 resetForm();
+                setLoading(false)
                 router.back();
             }
         })
@@ -79,13 +97,21 @@ const CreateProductScreen = () => {
         if (!validateForm()) {
             return
         }
-        console.warn('updating product', form)
-        // save to database
-
-        resetForm()
+        const { price, name } = form;
+        updateProduct({ price: parseFloat(price), name, image, id }, {
+            onSuccess: () => {
+                resetForm();
+                setLoading(false)
+                router.back();
+            }
+        })
     };
 
     const onSubmit = () => {
+        if (isLoading || loading) {
+            return
+        }
+        setLoading(true)
         if (isUpdating) {
             onUpdateCreate()
             return
@@ -94,7 +120,16 @@ const CreateProductScreen = () => {
     }
 
     const onDelete = () => {
-        console.warn('DELETING PRODUCT', form)
+        if (isLoading || loading) {
+            return
+        }
+        setLoading(true)
+        id && deleteProduct(id, {
+            onSuccess: () => {
+                setLoading(false)
+                router.replace('/(admin)');
+            }
+        })
     }
 
     const confirmDelete = () => {
@@ -111,6 +146,10 @@ const CreateProductScreen = () => {
         ]
 
         )
+    }
+
+    if (isLoading || loading) {
+        return <ActivityIndicator />
     }
     return (
         <ScrollView style={styles.container}>
@@ -147,8 +186,14 @@ const CreateProductScreen = () => {
                 value={form.price}
             />
             <Text style={{ color: 'red' }}>{errors}</Text>
-            <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
-            <Button onPress={confirmDelete} text="Delete" styles={styles.textButton} />
+            <Button
+                onPress={onSubmit}
+                text={isUpdating ? "Update" : "Create"}
+            />
+            {isUpdating && <Button
+                onPress={confirmDelete}
+                text="Delete" styles={styles.textButton}
+            />}
         </ScrollView>
     );
 };
