@@ -4,7 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import Colors from '@/constants/Colors';
 import { defaultPizzaImage } from '@/constants/Images';
-import { PizzaSize } from '@/types/types';
+import { PizzaSize } from '@/types/index';
 import { useProduct } from '@/api/products';
 import { useCart } from '@/providers/CartProvider';
 import { useState } from 'react';

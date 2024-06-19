@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'expo-router';
 
 
-import { OrderItem } from '@/types/types';
+import { OrderItem } from '@/types/index';
 import Colors from '@/constants/Colors';
 import { defaultPizzaImage } from '@/constants/Images';
 import { FontAwesome } from '@expo/vector-icons';

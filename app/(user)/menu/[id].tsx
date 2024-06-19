@@ -3,7 +3,7 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import Button from '@/components/Button';
 import { useCart } from '@/providers/CartProvider';
-import { PizzaSize } from '@/types/types';
+import { PizzaSize } from '@/types/index';
 import { defaultPizzaImage } from '@/constants/Images';
 import { useProduct } from '@/api/products';
 

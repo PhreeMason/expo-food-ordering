@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react'
-import { OrderItem, PizzaSize, Product } from '@/types/types'
+import { OrderItem, PizzaSize, Tables } from '@/types/index'
 import { randomUUID } from 'expo-crypto'
 
 type CartType = {
     items: OrderItem[],
-    addItem: (item: Product, size: PizzaSize) => void
-    updateQuantity: (itemId: string, quantity: -1 | 1) => void
+    addItem: (item: Tables<'products'>, size: PizzaSize) => void
+    updateQuantity: (itemId: number, quantity: -1 | 1) => void
     total: () => string
 }
 
@@ -20,11 +20,11 @@ const CartContext = createContext<CartType>({
 const CartProvider = ({ children }: PropsWithChildren) => {
     const [items, setItems] = useState<OrderItem[]>([])
 
-    const updateQuantity = (itemId: string, quantity: -1 | 1) => {
+    const updateQuantity = (itemId: number, quantity: -1 | 1) => {
         setItems(items.map(i => i.id === itemId ? { ...i, quantity: i.quantity + quantity } : i).filter(i => i.quantity > 0))
     }
 
-    const addItem = (item: Product, size: PizzaSize) => {
+    const addItem = (item: Tables<'products'>, size: PizzaSize) => {
         const existingItem = items.find(i => i.product_id === item.id && i.size === size)
         if (existingItem) {
             updateQuantity(existingItem.id, 1)
