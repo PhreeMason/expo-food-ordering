@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React, { PropsWithChildren, createContext, useContext, useState } from 'react'
-import { OrderItem, PizzaSize, Product } from '@/types'
+import { OrderItem, PizzaSize, Product } from '@/types/types'
 import { randomUUID } from 'expo-crypto'
 
 type CartType = {

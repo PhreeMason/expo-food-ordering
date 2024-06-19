@@ -29,7 +29,6 @@ export default function TabOneScreen() {
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'gainsboro',

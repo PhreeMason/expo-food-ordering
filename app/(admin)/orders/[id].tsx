@@ -5,7 +5,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { FlatList, Text, View, StyleSheet } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useState } from 'react';
-import { OrderStatusList, OrderStatus } from '@/types'
+import { OrderStatusList, OrderStatus } from '@/types/types'
 
 export default function OrderDetailsScreen() {
     const [selectedStatus, setSelectedStatus] = useState<OrderStatus>('New')
