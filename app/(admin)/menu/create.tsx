@@ -51,8 +51,6 @@ const CreateProductScreen = () => {
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.canceled) {
             setImage(result.assets[0].uri);
         }
@@ -62,7 +60,6 @@ const CreateProductScreen = () => {
         if (!validateForm()) {
             return
         }
-        console.log(form)
         // save to database
 
         resetForm()

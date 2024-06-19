@@ -1,15 +1,28 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Alert } from 'react-native'
 import Button from '@/components/Button'
 import { Stack, Link } from 'expo-router'
 import Colors from '@/constants/Colors';
+import { supabase } from '@/lib/supabase';
+
 
 const SignUp = () => {
     const [errors, setErrors] = useState('')
+    const [loading, setLoading] = useState(false)
+
     const [form, setForm] = useState({
         email: '',
         password: ''
     })
+
+    const signUpWithEmail = async () => {
+        setLoading(true)
+        const { error, } = await supabase.auth.signUp(form)
+        if (error) {
+            Alert.alert(error.message)
+        }
+        setLoading(false)
+    }
 
     const onSubmit = () => {
         if (!form.email || !form.password) {
@@ -17,7 +30,7 @@ const SignUp = () => {
             return
         }
         setErrors('')
-        console.log(form)
+        signUpWithEmail()
         setForm({
             email: '',
             password: ''
@@ -46,7 +59,7 @@ const SignUp = () => {
             />
 
             <Text>{errors}</Text>
-            <Button text="Sign up" onPress={onSubmit} />
+            <Button text={loading ? "Creating account" : "Sign up"} disabled={loading} onPress={signUpWithEmail} />
             <Link href="./sign-in" style={styles.textButton}>Sign in</Link>
         </View>
     )
