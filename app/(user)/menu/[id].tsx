@@ -1,18 +1,19 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'react-native'
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import products from '@/assets/data/products';
-import Colors from '@/constants/Colors';
 import { useState } from 'react';
 import Button from '@/components/Button';
 import { useCart } from '@/providers/CartProvider';
 import { PizzaSize } from '@/types';
 import { defaultPizzaImage } from '@/constants/Images';
+import { useProduct } from '@/api/products';
 
 const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
-const ProductDetailWithId = () => {
-    const { id } = useLocalSearchParams()
-    const product = products.find(product => product.id === Number(id))
+const ProductDetailScreen = () => {
+    const { id: idString } = useLocalSearchParams()
+    const id = idString && parseFloat(typeof idString === 'string' ? idString : idString[0]);
+
+    const { data: product, isLoading, error } = useProduct(id || 0)
     const [selectedSize, setSelectedSize] = useState<PizzaSize>('M');
 
     const { addItem } = useCart()
@@ -21,6 +22,14 @@ const ProductDetailWithId = () => {
         if (!product) return;
         addItem(product, selectedSize)
         router.push('/cart')
+    }
+
+    if (isLoading) {
+        return <ActivityIndicator />;
+    }
+
+    if (error) {
+        return <Text>Failed to get products, try again later</Text>
     }
 
     if (!product) {
@@ -71,7 +80,7 @@ const ProductDetailWithId = () => {
     )
 }
 
-export default ProductDetailWithId
+export default ProductDetailScreen
 
 const styles = StyleSheet.create({
     container: {
