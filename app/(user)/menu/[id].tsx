@@ -15,7 +15,7 @@ const ProductDetailScreen = () => {
 
     const { data: product, isLoading, error } = useProduct(id || 0)
     const [selectedSize, setSelectedSize] = useState<PizzaSize>('M');
-
+    
     const { addItem } = useCart()
 
     const addToCart = () => {

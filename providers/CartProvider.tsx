@@ -30,14 +30,14 @@ const CartProvider = ({ children }: PropsWithChildren) => {
             updateQuantity(existingItem.id, 1)
             return
         }
-        const newCartItem: OrderItem = {
+        const newOrderItem: OrderItem = {
             id: randomUUID(),
             product: item,
             product_id: item.id,
             size,
             quantity: 1
         }
-        setItems([...items, newCartItem])
+        setItems([...items, newOrderItem])
     }
 
     const total = () => items.reduce((sum: number, item: OrderItem) => sum + item.product.price * item.quantity, 0).toFixed(2)
