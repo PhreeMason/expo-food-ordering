@@ -46,7 +46,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         });
     }, [])
 
-    console.log({ profile })
     return <AuthContext.Provider value={{
         session,
         loading,
