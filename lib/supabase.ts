@@ -15,9 +15,30 @@ const ExpoSecureStoreAdapter = {
     },
 };
 
-const supabaseUrl = "https://qwarlukbfuexhqaslwtr.supabase.co";
+const {
+    NODE_ENV,
+    EXPO_PUBLIC_API_URL_DEV,
+    EXPO_PUBLIC_SUPABASE_ANON_DEV,
+    EXPO_PUBLIC_SUPABASE_URL,
+    EXPO_PUBLIC_SUPABASE_ANON,
+} = process.env;
+
+const isDevEnv = NODE_ENV === "development";
+
+console.log({
+    NODE_ENV,
+    EXPO_PUBLIC_API_URL_DEV,
+    EXPO_PUBLIC_SUPABASE_ANON_DEV,
+    EXPO_PUBLIC_SUPABASE_URL,
+    EXPO_PUBLIC_SUPABASE_ANON,
+});
+
+const supabaseUrl =
+    (isDevEnv ? EXPO_PUBLIC_API_URL_DEV : EXPO_PUBLIC_SUPABASE_URL) || "";
+
 const supabaseAnonKey =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3YXJsdWtiZnVleGhxYXNsd3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTg3NTMwMTksImV4cCI6MjAzNDMyOTAxOX0.P9g7nN7bb-n-Au9IzmBLRe5GWRcAy7AESNrfUSn3eac";
+    (isDevEnv ? EXPO_PUBLIC_SUPABASE_ANON_DEV : EXPO_PUBLIC_SUPABASE_ANON) ||
+    "";
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
