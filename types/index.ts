@@ -1,20 +1,19 @@
-import { Database } from './database.types';
+import { Database } from "./database.types";
 
-export type Tables<T extends keyof Database['public']['Tables']> =
-    Database['public']['Tables'][T]['Row'];
+export type Tables<T extends keyof Database["public"]["Tables"]> =
+    Database["public"]["Tables"][T]["Row"];
 
-export type TablesInsert<T extends keyof Database['public']['Tables']> =
-    Database['public']['Tables'][T]['Insert'];
+export type TablesInsert<T extends keyof Database["public"]["Tables"]> =
+    Database["public"]["Tables"][T]["Insert"];
 
-export type TablesUpdate<T extends keyof Database['public']['Tables']> =
-    Database['public']['Tables'][T]['Update'];
+export type TablesUpdate<T extends keyof Database["public"]["Tables"]> =
+    Database["public"]["Tables"][T]["Update"];
 
-export type Enums<T extends keyof Database['public']['Enums']> =
-    Database['public']['Enums'][T];
+export type Enums<T extends keyof Database["public"]["Enums"]> =
+    Database["public"]["Enums"][T];
 
-
-export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
-export type Product = Tables<'products'>
+export type PizzaSize = "S" | "M" | "L" | "XL";
+export type Product = Tables<"products">;
 export type CartItem = {
     id: string;
     product: Product;
@@ -24,16 +23,16 @@ export type CartItem = {
 };
 
 export const OrderStatusList: OrderStatus[] = [
-    'New',
-    'Cooking',
-    'Delivering',
-    'Delivered',
+    "New",
+    "Cooking",
+    "Delivering",
+    "Delivered",
 ];
 
-export type OrderStatus = 'New' | 'Cooking' | 'Delivering' | 'Delivered';
+export type OrderStatus = "New" | "Cooking" | "Delivering" | "Delivered";
 
-export type Order = Tables<'orders'>;
+export type Order = Tables<"orders">;
 
-export type OrderItem = Tables<'order_items'>;
+export type OrderItem = Tables<"order_items">;
 
-export type Profile = Tables<'profiles'>;
+export type Profile = Tables<"profiles">;
