@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, Image, ScrollView, Alert, ActivityIndicator } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-
+import * as FileSystem from 'expo-file-system';
+import { randomUUID } from 'expo-crypto';
+import { decode } from 'base64-arraybuffer';
+import { supabase } from "@/lib/supabase";
 import { defaultPizzaImage } from "@/constants/Images";
 import Button from "@/components/Button";
 import Colors from "@/constants/Colors";
@@ -36,6 +39,25 @@ const CreateProductScreen = () => {
             setImage(upDatingProduct.image)
         }
     }, [upDatingProduct])
+
+    const uploadImage = async () => {
+        if (!image?.startsWith('file://')) {
+            return;
+        }
+
+        const base64 = await FileSystem.readAsStringAsync(image, {
+            encoding: 'base64',
+        });
+        const filePath = `${randomUUID()}.png`;
+        const contentType = 'image/png';
+        const { data, error } = await supabase.storage
+            .from('product-images')
+            .upload(filePath, decode(base64), { contentType });
+
+        if (data) {
+            return data.path;
+        }
+    };
 
     const router = useRouter();
 
@@ -78,19 +100,19 @@ const CreateProductScreen = () => {
         }
     };
 
-    const onCreate = () => {
+    const onCreate = async () => {
         if (!validateForm()) {
             return
         }
         const { price, name } = form;
-        insertProduct({ price: parseFloat(price), name, image }, {
+        const imagePath = await uploadImage();
+        insertProduct({ price: parseFloat(price), name, image: imagePath }, {
             onSuccess: () => {
                 resetForm();
                 setLoading(false)
                 router.back();
             }
         })
-
     };
 
     const onUpdateCreate = () => {

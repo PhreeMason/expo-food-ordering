@@ -1,26 +1,25 @@
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import React from 'react';
-import { Link } from 'expo-router';
-
+import { View, Text, StyleSheet } from 'react-native';
 
 import { CartItem } from '@/types/index';
 import Colors from '@/constants/Colors';
 import { defaultPizzaImage } from '@/constants/Images';
 import { FontAwesome } from '@expo/vector-icons';
 import { useCart } from '@/providers/CartProvider';
+import RemoteImage from './RemoteImage';
 
 type CartListItemProps = {
     orderItem: CartItem;
 };
 
 const CartListItem = ({ orderItem }: CartListItemProps) => {
+    const { product } = orderItem
     const { updateQuantity } = useCart();
     return (
         <View style={styles.container}>
-            <Image
-                source={{ uri: orderItem.product.image || defaultPizzaImage }}
+            <RemoteImage
+                fallback={defaultPizzaImage}
+                path={product.image}
                 style={styles.image}
-                resizeMode="contain"
             />
             <View style={{ flex: 1 }}>
                 <Text style={styles.title}>{orderItem.product.name}</Text>

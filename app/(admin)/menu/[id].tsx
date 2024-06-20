@@ -8,6 +8,7 @@ import { PizzaSize } from '@/types/index';
 import { useProduct } from '@/api/products';
 import { useCart } from '@/providers/CartProvider';
 import { useState } from 'react';
+import RemoteImage from '@/components/RemoteImage';
 
 const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL']
 
@@ -30,7 +31,7 @@ const ProductDetailWithId = () => {
         return <ActivityIndicator />;
     }
 
-    if (error) {
+    if (error || !product) {
         return <Text>Failed to get products, try again later</Text>
     }
     return (
@@ -54,9 +55,11 @@ const ProductDetailWithId = () => {
                     ),
                 }}
             />
-            <Image
-                source={{ uri: product.image || defaultPizzaImage }}
-                style={styles.image} />
+            <RemoteImage
+                fallback={defaultPizzaImage}
+                path={product.image}
+                style={styles.image}
+            />
 
             <Text style={styles.price}>{product.name}</Text>
             <Text style={styles.price}>
