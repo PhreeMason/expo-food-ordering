@@ -115,12 +115,14 @@ const CreateProductScreen = () => {
         })
     };
 
-    const onUpdateCreate = () => {
+    const onUpdateCreate = async () => {
         if (!validateForm()) {
             return
         }
         const { price, name } = form;
-        updateProduct({ price: parseFloat(price), name, image, id }, {
+        const imagePath = upDatingProduct?.image === image ? image : await uploadImage();
+
+        updateProduct({ price: parseFloat(price), name, image: imagePath, id }, {
             onSuccess: () => {
                 resetForm();
                 setLoading(false)
