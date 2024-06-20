@@ -6,4 +6,6 @@
     bunx supabase db pull
     bunx supabase db pull --schema auth,storage
     bunx supabase start
+
+    ngrok http 54321
 ```
