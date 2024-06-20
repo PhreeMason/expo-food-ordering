@@ -15,7 +15,7 @@ export default function OrderDetailsScreen() {
     const { data: order, error, isLoading } = useOrderDetails(id || 0);
 
     useEffect(() => {
-        if(!order) return;
+        if (!order) return;
         setSelectedStatus(order.status as OrderStatus)
     }, [order])
 
@@ -36,7 +36,7 @@ export default function OrderDetailsScreen() {
             <Stack.Screen options={{ title: `Order #${id}` }} />
 
             <FlatList
-                data={[]}
+                data={order.order_items}
                 renderItem={({ item }) => <OrderItemListItem item={item} />}
                 contentContainerStyle={{ gap: 10 }}
                 ListHeaderComponent={() => <OrderListItem order={order} />}

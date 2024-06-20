@@ -15,7 +15,7 @@ const CartScreen = () => {
                 renderItem={({ item }) => <CartListItem orderItem={item} />}
                 contentContainerStyle={styles.container}
             />
-            <Text style={styles.total}>Total: {total()}</Text>
+            <Text style={styles.total}>Total: {total.toFixed(2)}</Text>
             <Button text="Checkout" onPress={checkout} />
             <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
         </View>

@@ -1,25 +1,24 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
 import Colors from '@/constants/Colors';
-import { OrderItem } from '@/types/index';
+import { OrderItem, Product } from '@/types/index';
 import { defaultPizzaImage } from '@/constants/Images';
 
 type OrderItemListItemProps = {
-    item: OrderItem;
+    item: OrderItem & { products: Product | null };
 };
 
 const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
     return (
         <View style={styles.container}>
             <Image
-                source={{ uri: item.products.image || defaultPizzaImage }}
+                source={{ uri: item.products!.image || defaultPizzaImage }}
                 style={styles.image}
                 resizeMode="contain"
             />
             <View style={{ flex: 1 }}>
-                <Text style={styles.title}>{item.products.name}</Text>
+                <Text style={styles.title}>{item.products?.name}</Text>
                 <View style={styles.subtitleContainer}>
-                    <Text style={styles.price}>${item.products.price.toFixed(2)}</Text>
+                    <Text style={styles.price}>${item.products!.price.toFixed(2)}</Text>
                     <Text>Size: {item.size}</Text>
                 </View>
             </View>

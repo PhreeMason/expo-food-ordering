@@ -1,28 +1,19 @@
-import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/providers/AuthProvider";
-import { TablesInsert } from "@/types";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { supabase } from '@/lib/supabase';
+import { TablesInsert } from '@/types';
+import { useMutation } from '@tanstack/react-query';
 
 export const useInsertOrderItems = () => {
-    const queryClient = useQueryClient();
-    const { profile } = useAuth();
-    const userId = profile?.id;
     return useMutation({
-        async mutationFn(data: TablesInsert<'order_items'>) {
-            if (!userId) throw new Error('User not found');
-            const { data: newOrderItems, error } = await supabase
+        async mutationFn(items: TablesInsert<'order_items'>[]) {
+            const { error, data: newOrderItem } = await supabase
                 .from('order_items')
-                .insert({ ...data, user_id: userId })
-                .select('*')
-                .single()
+                .insert(items)
+                .select();
 
             if (error) {
-                throw new Error(error.message)
+                throw new Error(error.message);
             }
-            return newOrderItems;
+            return newOrderItem;
         },
-        async onSuccess() {
-            await queryClient.invalidateQueries({ queryKey: ['order_items', { userId }] })
-        }
-    })
-}
+    });
+};
