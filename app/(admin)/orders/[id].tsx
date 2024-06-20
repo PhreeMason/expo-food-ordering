@@ -3,21 +3,19 @@ import OrderListItem from '@/components/OrderListItem';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { FlatList, Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import Colors from '@/constants/Colors';
-import { useEffect, useState } from 'react';
-import { OrderStatusList, OrderStatus } from '@/types/index'
-import { useOrderDetails } from '@/api/orders';
+import { OrderStatusList } from '@/types/index'
+import { useOrderDetails, useUpdateOrder } from '@/api/orders';
 
 export default function OrderDetailsScreen() {
-    const [selectedStatus, setSelectedStatus] = useState<OrderStatus>('New')
     const { id: idString } = useLocalSearchParams()
-    const id = idString && parseFloat(typeof idString === 'string' ? idString : idString[0]);
+    const id = parseFloat(typeof idString === 'string' ? idString : idString![0]);
 
-    const { data: order, error, isLoading } = useOrderDetails(id || 0);
+    const { data: order, error, isLoading } = useOrderDetails(id);
+    const { mutate: updateOrder } = useUpdateOrder();
 
-    useEffect(() => {
-        if (!order) return;
-        setSelectedStatus(order.status as OrderStatus)
-    }, [order])
+    const updateStatus = (status: string) => {
+        updateOrder({ id, updatedFields: { status } })
+    }
 
     if (error) {
         return <Text>Failed to get orders, try again later</Text>;
@@ -50,10 +48,10 @@ export default function OrderDetailsScreen() {
                                         key={status}
                                         style={[
                                             styles.orderStatusText, {
-                                                ...(selectedStatus === status ? styles.selectedStatus : {})
+                                                ...(order.status === status ? styles.selectedStatus : {})
                                             }
                                         ]}
-                                        onPress={() => setSelectedStatus(status)}
+                                        onPress={() => updateStatus(status)}
                                     >
                                         {status}
                                     </Text>
