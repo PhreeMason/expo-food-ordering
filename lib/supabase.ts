@@ -25,14 +25,6 @@ const {
 
 const isDevEnv = NODE_ENV === "development";
 
-console.log({
-    NODE_ENV,
-    EXPO_PUBLIC_API_URL_DEV,
-    EXPO_PUBLIC_SUPABASE_ANON_DEV,
-    EXPO_PUBLIC_SUPABASE_URL,
-    EXPO_PUBLIC_SUPABASE_ANON,
-});
-
 const supabaseUrl =
     (isDevEnv ? EXPO_PUBLIC_API_URL_DEV : EXPO_PUBLIC_SUPABASE_URL) || "";
 

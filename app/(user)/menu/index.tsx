@@ -34,6 +34,7 @@ export default function MenuScreen() {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'gainsboro',
+        flex: 1,
     },
     listContainer: {
         gap: 10,

@@ -34,15 +34,7 @@
                     "photosPermission": "Allow $(PRODUCT_NAME) to access your photos"
                 }
             ],
-            "expo-secure-store",
-            [
-                "expo-build-properties",
-                {
-                    "android": {
-                        "usesCleartextTraffic": true
-                    }
-                }
-            ]
+            "expo-secure-store"
         ],
         "experiments": {
             "typedRoutes": true,
